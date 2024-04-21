@@ -2,107 +2,12 @@
 const contractABI = [
     // Define your contract's ABI here
     
-        {
-            "inputs": [
-                {
-                    "internalType": "string",
-                    "name": "_content",
-                    "type": "string"
-                }
-            ],
-            "name": "createPost",
-            "outputs": [],
-            "stateMutability": "nonpayable",
-            "type": "function"
-        },
-        {
-            "anonymous": false,
-            "inputs": [
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                },
-                {
-                    "indexed": false,
-                    "internalType": "uint256",
-                    "name": "createdAt",
-                    "type": "uint256"
-                }
-            ],
-            "name": "PostCreated",
-            "type": "event"
-        },
-        {
-            "inputs": [],
-            "name": "postCount",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        },
-        {
-            "inputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "",
-                    "type": "uint256"
-                }
-            ],
-            "name": "posts",
-            "outputs": [
-                {
-                    "internalType": "uint256",
-                    "name": "id",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "address",
-                    "name": "author",
-                    "type": "address"
-                },
-                {
-                    "internalType": "string",
-                    "name": "content",
-                    "type": "string"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "createdAt",
-                    "type": "uint256"
-                },
-                {
-                    "internalType": "uint256",
-                    "name": "likes",
-                    "type": "uint256"
-                }
-            ],
-            "stateMutability": "view",
-            "type": "function"
-        }
+       
     
 ];
 
 // Define contract address (you'll get this after deploying your contract)
-const contractAddress = '0x2cc039993942bdead1c4281e9da089f44743de38';
+const contractAddress = '0x2...';
 
 // Initialize Web3
 let web3;
