@@ -1,15 +1,24 @@
 body {
     font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
 }
 
-#postForm {
-    margin-bottom: 20px;
+.container {
+    text-align: center; /* Center align the content */
+}
+
+.title {
+    margin-top: 20px; /* Add some margin from the top */
 }
 
 textarea {
     width: 100%;
     height: 100px;
     margin-bottom: 10px;
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
 }
 
 button {
@@ -18,6 +27,7 @@ button {
     color: #fff;
     border: none;
     cursor: pointer;
+    border-radius: 25px; /* Adjust border-radius to make buttons rounder */
 }
 
 button:hover {
@@ -25,7 +35,15 @@ button:hover {
 }
 
 .post {
-    border: 1px solid #ccc;
+    border: 1px solid #555;
     padding: 10px;
     margin-bottom: 10px;
+    background-color: #333;
+}
+
+/* Logo */
+.logo {
+    width: 100px; /* Adjust width of the logo */
+    height: auto; /* Maintain aspect ratio */
+    margin-right: 10px; /* Adjust margin as needed */
 }
