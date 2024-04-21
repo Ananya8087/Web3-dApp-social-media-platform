@@ -2,12 +2,162 @@
 const contractABI = [
     // Define your contract's ABI here
     
-       
+    
+    
+        {
+            "inputs": [
+                {
+                    "internalType": "string",
+                    "name": "_content",
+                    "type": "string"
+                }
+            ],
+            "name": "createPost",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_postId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "likePost",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "id",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "author",
+                    "type": "address"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "content",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "createdAt",
+                    "type": "uint256"
+                }
+            ],
+            "name": "PostCreated",
+            "type": "event"
+        },
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "id",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "liker",
+                    "type": "address"
+                }
+            ],
+            "name": "PostLiked",
+            "type": "event"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "_postId",
+                    "type": "uint256"
+                }
+            ],
+            "name": "getPostLikers",
+            "outputs": [
+                {
+                    "internalType": "address[]",
+                    "name": "",
+                    "type": "address[]"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "postCount",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        },
+        {
+            "inputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "name": "posts",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "id",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "address",
+                    "name": "author",
+                    "type": "address"
+                },
+                {
+                    "internalType": "string",
+                    "name": "content",
+                    "type": "string"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "createdAt",
+                    "type": "uint256"
+                },
+                {
+                    "internalType": "uint256",
+                    "name": "likes",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    
+    
     
 ];
 
 // Define contract address (you'll get this after deploying your contract)
-const contractAddress = '0x2...';
+const contractAddress = '0x19d3857ecE840a726021eC4479435D78FB191089';
 
 // Initialize Web3
 let web3;
@@ -47,34 +197,54 @@ async function createPost() {
 async function displayPosts() {
     try {
         const postCount = await contractInstance.methods.postCount().call();
-        console.log('Post count:', postCount);
-        
         const postsContainer = document.getElementById('postsContainer');
-        postsContainer.innerHTML = ''; // Clear existing posts
-        
+        postsContainer.innerHTML = '';  // Clear previous posts
+
         for (let i = 1; i <= postCount; i++) {
-            const post = await contractInstance.methods.posts(i).call();
-            const postElement = document.createElement('div');
+            let post = await contractInstance.methods.posts(i).call();
+            let postElement = document.createElement('div');
             postElement.classList.add('post');
             postElement.innerHTML = `
-                <p>Author: ${post.author}</p>
                 <p>${post.content}</p>
-                <p>Likes: ${post.likes}</p>
-                <button onclick="likePost(${post.id})">Like</button>
+                <p>Author: ${post.author}</p>
+                <p>Likes: ${post.likes} <button onclick="likePost(${post.id})">Like</button></p>
             `;
             postsContainer.appendChild(postElement);
+
+            // Display likers for this post
+            const likers = await contractInstance.methods.getPostLikers(i).call();
+            const likersContainer = document.createElement('div');
+            likersContainer.innerHTML = `Likers: ${likers.join(', ')}`;
+            postElement.appendChild(likersContainer);
         }
     } catch (error) {
         console.error('Error retrieving posts:', error);
     }
 }
+async function getAccount() {
+    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    return accounts[0];  // This will have the user's first account.
+}
 
 
 // Function to like a post
 async function likePost(postId) {
-    await contractInstance.methods.likePost(postId).send({ from: web3.eth.defaultAccount });
-    displayPosts();
+    try {
+        const fromAddress = await getAccount();  // Ensure you have the user's address.
+
+        await contractInstance.methods.likePost(postId).send({ from: fromAddress });
+        console.log('Post liked successfully');
+    } catch (error) {
+        console.error('Error liking the post:', error);
+    }
 }
+async function displayLikers(postId) {
+    const likers = await contract.methods.getPostLikers(postId).call();
+    console.log(`Likers for Post ID ${postId}:`, likers);
+    // You can further process likers array to display in your UI
+}
+
+
 
 // Initialize default account and display posts
 window.addEventListener('DOMContentLoaded', async () => {
