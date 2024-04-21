@@ -1,1 +1,1 @@
-# Web3-dApp-social-media-platform
+# Web3 dApp social media platform
